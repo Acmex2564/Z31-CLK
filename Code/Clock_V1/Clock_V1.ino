@@ -3,6 +3,43 @@
 #include <TimeLib.h>
 #include <ACAN.h>
 
+#define CAN_TX 3
+#define CAN_RX 4
+#define CAN_EN 1
+
+#define CAN_BITRATE_HS 5*100*1000 //500kbit/s
+#define ID_LAMBDA 0x400
+#define ID_BRIGHTNESS 0x202
+#define ID_TEMPERATURE 0x750
+#define ID_STATUS 0x755
+#define ID_SPEED 0x760
+#define ID_FUEL 0x720
+
+#define ledData 23
+#define ledRS 22
+#define ledClk 21
+#define ledEn 15
+#define ledRst 14
+
+#define ledLen 8
+
+#define TIME_HEADER  "T"   // Header tag for serial time sync message
+
+#define PAGE_CLOCK 0 //"HH:MM:SS"
+#define PAGE_CAL 1 //"DD/MM/YY"
+#define PAGE_AFR 2 //"AFR XXXX"
+#define PAGE_LSU_TEMP 3 //"LSU YYYC"
+#define PAGE_LSU_STATE 4 //"STA 0xZZ"
+#define PAGE_RAD_TEMP 5 //"RAD YY*C"
+#define PAGE_FAN_SPD 6 //"FAN XXX%"
+#define PAGE_FUEL_AP 7 //
+#define PAGE_MAN_AP 8 //
+#define PAGE_VEH_SPD 9 //
+#define PAGE_FUEL_1 10 //
+#define PAGE_FUEL_2 11 //
+
+
+
 const byte rows = 2;
 const byte cols = 2;
 
@@ -15,27 +52,6 @@ byte colPins[cols] = {7, 8};
 
 Keypad buttonPad = Keypad(makeKeymap(buttons), rowPins, colPins, rows, cols);
 
-#define CAN_TX 3
-#define CAN_RX 4
-#define CAN_EN 1
-
-#define CAN_BITRATE_HS 5*100*1000 //500kbit/s
-#define ID_LAMBDA 0x400
-#define ID_BRIGHTNESS 0x202
-#define ID_TEMPERATURE 0x750
-#define ID_STATUS 0x755
-#define ID_SPEED 0x760
-
-#define ledData 23
-#define ledRS 22
-#define ledClk 21
-#define ledEn 15
-#define ledRst 14
-
-#define ledLen 8
-
-#define TIME_HEADER  "T"   // Header tag for serial time sync message
-
 LedDisplay disp = LedDisplay(ledData, ledRS, ledClk, ledEn, ledRst, ledLen);
 
 int brightness = 15;
@@ -44,15 +60,6 @@ int currentPage = 0;
 
 int TZ_ADJUST = -4;
 
-/* Page List:
-    0: Clock: "HH:MM:SS"
-    1: Cal: "DD/MM/YY"
-    2: AFR: "AFR XXXX"
-    3: LSU Temp: "LSU YYYC"
-    4: LSU State: "STA 0xZZ"
-    5: RAD Temp: "RAD YY*C"
-    6: FAN Speed: "FAN XXX%"
-*/
 
 uint8_t currentSecond = second();
 
@@ -67,12 +74,15 @@ int pressManifold;
 int pressFuel;
 int vehicleSpeed;
 int pwmFan;
+int fuelMain;
+int fuelSub;
 
 
 unsigned long timeLastLambda;
 unsigned long timeLastTemp;
 unsigned long timeLastStatus;
 unsigned long timeLastSpeed;
+unsigned long timeLastFuel;
 unsigned long timeMaxMessage = 2000;
 
 void setup() {
@@ -178,6 +188,12 @@ void loop() {
         vehicleSpeed = frameReceived.data[0];
         timeLastSpeed = millis();
         break;
+
+      case ID_FUEL:
+        fuelMain = frameReceived.data[0];
+        fuelSub = frameReceived.data[1];
+        timeLastFuel = millis();
+        break;
     };
   };
 
@@ -188,7 +204,7 @@ refreshDisp(currentPage);
 void updateDisp(int currentState, char keyPress) {
   switch (keyPress) {
     case 'S':
-      if (currentState >= 9) {
+      if (currentState >= 11) {
         currentPage = 0;
       }
       else {
@@ -219,7 +235,7 @@ unsigned long processSyncMessage() {
 void refreshDisp(int currentState) {
   disp.home();
   switch (currentState) {
-    case 0: //clock
+    case PAGE_CLOCK: //clock
       if (currentSecond != second()) {
         
         disp.print(getTimeStamp());
@@ -231,7 +247,7 @@ void refreshDisp(int currentState) {
       disp.print(getDateStamp());
       break;
 
-    case 2: //lambda
+    case PAGE_AFR: //lambda
       
       disp.print("AFR:");
       if (millis() - timeLastLambda > timeMaxMessage) {
@@ -241,7 +257,7 @@ void refreshDisp(int currentState) {
         disp.print((float)lambda / 1000 , 2);
       }
       break;
-    case 3: //lsu temp
+    case PAGE_LSU_TEMP: //lsu temp
       
       disp.print("LSU ");
       if (millis() - timeLastLambda > timeMaxMessage) {
@@ -252,7 +268,7 @@ void refreshDisp(int currentState) {
         disp.print("C");
       }
       break;
-    case 4: //lsu status
+    case PAGE_LSU_STATE: //lsu status
       
       disp.print("STA ");
       if (millis() - timeLastLambda > timeMaxMessage) {
@@ -263,7 +279,7 @@ void refreshDisp(int currentState) {
       }
       break;
 
-    case 5: //radiator temperature
+    case PAGE_RAD_TEMP: //radiator temperature
       
       disp.print("RCT ");
       if (millis() - timeLastTemp > timeMaxMessage){
@@ -275,7 +291,7 @@ void refreshDisp(int currentState) {
       }
       break;
 
-    case 6:
+    case PAGE_FAN_SPD:
       disp.print("FAN ");
       if (millis() - timeLastTemp > timeMaxMessage){
         disp.print("NDAT");
@@ -284,7 +300,7 @@ void refreshDisp(int currentState) {
         disp.printf("%3.0f%   ", 100 * (pwmFan/255.0));
       }
       break;
-    case 7: //fuel pressure
+    case PAGE_FUEL_AP: //fuel pressure
       disp.print("FP ");
       if (millis() - timeLastStatus > timeMaxMessage){
         disp.print(" NDAT");
@@ -293,7 +309,7 @@ void refreshDisp(int currentState) {
         disp.printf("%2.1f#   ", pressFuel*3/6.895);
       }
       break;
-    case 8: //manifold pressure
+    case PAGE_MAN_AP: //manifold pressure
       disp.print("MP ");
       if (millis() - timeLastStatus > timeMaxMessage){
         disp.print(" NDAT");
@@ -303,7 +319,7 @@ void refreshDisp(int currentState) {
       }
       break;
 
-    case 9: //vehicle speed
+    case PAGE_VEH_SPD: //vehicle speed
       disp.print("SPD ");
       if (millis() - timeLastStatus > timeMaxMessage){
         disp.print(" NDAT");
@@ -311,6 +327,25 @@ void refreshDisp(int currentState) {
       else {
         disp.print(vehicleSpeed);
         disp.print("k  ");
+      }
+      break;
+
+    case PAGE_FUEL_1:
+      disp.print("MFL ");
+      if (millis() - timeLastFuel > timeMaxMessage){
+        disp.print("NDAT");
+      }
+      else {
+        disp.printf("%2.1f", ((float)fuelMain)/10);
+      }
+      break;
+    case PAGE_FUEL_2:
+      disp.print("SFL ");
+      if (millis() - timeLastFuel > timeMaxMessage){
+        disp.print("NDAT");
+      }
+      else {
+        disp.printf("%2.1f", ((float)fuelSub)/10);
       }
       break;
   }
