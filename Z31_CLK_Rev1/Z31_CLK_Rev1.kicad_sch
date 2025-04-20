@@ -2996,10 +2996,10 @@
     (property "Datasheet" "~" (at 114.3 102.87 0)
       (effects (font (size 1.27 1.27)) hide)
     )
-    (pin "1" (uuid 308f3281-678a-44ea-b699-98fc308082e0))
-    (pin "2" (uuid c35c8d3b-c5d4-4813-814c-f55580f08909))
-    (pin "3" (uuid e5004f59-8cbc-4111-8bab-efe8e86e9813))
-    (pin "4" (uuid 89d24f18-7b52-42ed-bae9-c5752facac05))
+    (pin "1" (uuid b45d32dd-31a8-4b11-b610-6deb5e8c3fec))
+    (pin "2" (uuid 012a69d5-45ab-42eb-b99f-6db73e097964))
+    (pin "3" (uuid 463010b2-b057-48fd-a4e0-87152ca92b27))
+    (pin "4" (uuid 589fadcc-4b64-48ff-8d62-75cf50858152))
     (instances
       (project "FLCU-Test-2"
         (path "/97a1499d-8f21-4661-8bed-0e1e89d0838c"
@@ -3529,12 +3529,12 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid e9d0dd9d-23a6-49e2-a755-c22f21b1aa42))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb377))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb377))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37a))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37a))
     (pin "3" (uuid e70b5c68-d762-401b-86dd-8199523487c9))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb377))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37a))
     (pin "4" (uuid 2c632253-72ff-46a0-a9aa-19fce40d5d22))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb377))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37a))
     (pin "5" (uuid e5b156b7-4e44-4199-9e92-f853b6d9fc70))
     (instances
       (project "FLCU-Test-2"
@@ -4195,12 +4195,12 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 1ffa4a83-6314-41b2-8f66-381bde8e8038))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a390))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a390))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a393))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a393))
     (pin "3" (uuid c0e57bd9-edd8-479a-9a97-afdf917a2f17))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a390))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a393))
     (pin "4" (uuid bfa350da-9a69-42ad-8f5a-227acbeb2b06))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a390))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a393))
     (pin "5" (uuid 6334d644-c7b9-482e-9932-c28a0715f425))
     (instances
       (project "FLCU-Test-2"
@@ -4576,12 +4576,12 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 54800d98-99f2-4da2-a2a9-155eefa86979))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37b))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37b))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37e))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37e))
     (pin "3" (uuid e70b5c68-d762-401b-86dd-8199523487ca))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37b))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37e))
     (pin "4" (uuid 2c632253-72ff-46a0-a9aa-19fce40d5d23))
-    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37b))
+    (pin "2" (uuid 849008b7-4953-464b-9af2-a812579cb37e))
     (pin "5" (uuid e5b156b7-4e44-4199-9e92-f853b6d9fc71))
     (instances
       (project "FLCU-Test-2"
@@ -4914,12 +4914,12 @@
       (effects (font (size 1.27 1.27)) hide)
     )
     (pin "1" (uuid 0dad34ce-9174-4857-a44b-65dbc0e7ee34))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a394))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a394))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a397))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a397))
     (pin "3" (uuid c0e57bd9-edd8-479a-9a97-afdf917a2f18))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a394))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a397))
     (pin "4" (uuid bfa350da-9a69-42ad-8f5a-227acbeb2b07))
-    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a394))
+    (pin "2" (uuid f7852b82-3780-4d7a-8e02-587cc4e9a397))
     (pin "5" (uuid 6334d644-c7b9-482e-9932-c28a0715f426))
     (instances
       (project "FLCU-Test-2"
